@@ -1,4 +1,5 @@
 /project03/settings/local.py
 .project
 .pydevproject
+.env
 db.sqlite3
