@@ -1,26 +1,7 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from blog.models import Post
-
-class SuperUserTestCase(TestCase):
-    '''
-        superuserを用いるTestCase
-    '''
-     
-    def setUp(self):
-        '''
-            TestCase.setUp をオーバーライド。
-            各テストメソッド前に実行される。
-        '''
-        self.username = 'test_admin1'
-        self.password = User.objects.make_random_password()
-        user, created = User.objects.get_or_create(username=self.username)
-        user.set_password(self.password)
-        user.is_staff = True
-        user.is_superuser = True
-        user.is_active = True
-        user.save()
-        self.user = user
+from blog.models import Post, Tag
+from blog.tests.testcases import SuperUserTestCase
 
 
 class PostModelTest(SuperUserTestCase):
@@ -28,9 +9,9 @@ class PostModelTest(SuperUserTestCase):
     def test_create_and_get_post_object(self):
         '''
         ToDo:
-            ・初期Post数は0
-            ・Save後は1
-            ・作成したオブジェクトとモデルから取得したPostオブジェクトが等しい。
+            - 初期Post数は0 
+            - Save後は1
+            - 作成したオブジェクトとモデルから取得したPostオブジェクトが等しい。
         '''
         self.assertEquals(Post.objects.all().count(), 0)
         post = Post()
@@ -39,11 +20,28 @@ class PostModelTest(SuperUserTestCase):
         post.content = 'sample post content'
         post.save()
         self.assertEqual(Post.objects.all().count(), 1)
-        self.assertEqual(Post.objects.get(pk=post.pk).title, 'sample post title')
+        self.assertEqual(Post.objects.get(pk=post.pk), post)
+
+    def test_get_only_published_posts(self):
+        self.assertEquals(Post.objects.all().count(), 0)
+        
+        for i in range(2):
+            post = Post()
+            post.title = 'sample post title'
+            post.author = self.user
+            post.content = 'sample post content'
+            if i == 0: post.publish()
+            post.save()     
+        
+        self.assertEqual(Post.objects.all().count(), 2)
+        self.assertEqual(Post.objects.published().count(), 1)
+        
 
     def test_can_not_create_post_object_without_author(self):
         '''
+        ToDo:
             ・authorなしでPostは投稿できない。
+            ・ログイン済みのユーザでなければPostを投稿できない。
         '''
         post = Post()
         post.title = 'sample post title'
@@ -51,18 +49,31 @@ class PostModelTest(SuperUserTestCase):
         
         try: 
             post.save()
-        except:
-            self.assertTrue(True)
+        except Exception as e:
+            self.assertEquals(str(e.__cause__), 'NOT NULL constraint failed: blog_post.author_id')
             
 
         post.author = User()
         
         try:
             post.save()
-        except:
-            self.assertTrue(True)
+        except Exception as e:
+            self.assertEquals(e.__cause__, None)
             
-    
+ 
+class TagModelTest(TestCase):
+ 
+    def test_not_insert_same_name(self):
+        '''
+            同一のnameを持つオブジェクトは追加できない。
+        '''
+        try:
+            for i in range(2):
+                tag = Tag()
+                tag.name = 'Python'
+                tag.save()
+        except Exception as e:
+            self.assertEquals(str(e.__cause__), 'UNIQUE constraint failed: blog_tag.name')
         
 class UserModelTest(SuperUserTestCase):
     '''

@@ -1,0 +1,37 @@
+{% load static %}
+
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>{% block title %}ブログ{% endblock %}</title>
+	
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@3.0.1/github-markdown.min.css"> -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'blog/css/content.css' %}" />
+	<link rel="stylesheet" href="{% static 'blog/css/style.css' %}" />	
+</head>
+<body>
+<header class="header" >
+	<div class="hf-grid-contents container">
+		<h1 class="header-title"><a href="{% url 'blog:index' %}">Sample</a></h1>
+    </div>
+</header>
+
+<main class="container">
+	{% block content %}
+	{% endblock %}
+</main>
+
+<footer class="footer">
+	<div class="hf-grid-contents container">	
+	    <p>&copy; 2020 Teppei Hayashi.</p>
+	    <ul class="footer-list">
+	        <li><a href="https://github.com/TeppeiHayashi">Github</a></li>
+	    </ul>
+    </div>
+</footer>
+<script src="{% static 'blog/js/app.js' %}"></script>
+</body>
+</html>

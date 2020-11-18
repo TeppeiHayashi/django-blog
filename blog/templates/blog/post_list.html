@@ -1,0 +1,54 @@
+{% extends 'blog/base.html' %}
+{% load blog.app %}
+
+{% block title %}{% title '一覧' %}{% endblock %}
+
+{% block content %}
+<div>
+	<form action="" method="GET" class="search-form">
+		<p class="input-with-icon">
+			<i class="fa fa-search" aria-hidden="true"></i>
+			<input type="text" name="keyword" value="{{ request.GET.keyword }}"/>
+		</p>
+	</form>
+	<div id="posts">
+	<p class="posts-count">{{ paginator.count}}件の検索結果</p>
+	<p class="all-tags">
+		{% for tag in tags %}
+			<span><a href="">{{ tag }}({{ tag.post__count }})</a></span>
+		{% endfor %}
+	</p>
+	{% for post in posts %}
+		<article class="post">
+			<a href="" class="post-link">		
+				<h2 class="title">
+					{% if not post.published_at %}
+						<i class="fa fa-lock" aria-hidden="true"></i>
+					{% endif %}
+					{{ post.title }}
+				</h2>
+				<p class="description">{{ post.description }}</p>
+			
+			{% for tag in post.tags.all %} 
+			<span class="tag">{{ tag }}</span>
+			{% endfor %}
+			</a>
+		</article>
+	{% endfor %}
+	</div>
+	
+	<nav class="page-list">
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="page current">{{ num }}</span>
+            {% else %}
+                <a href="" class="page">{{ num }}</a>
+            {% endif %}
+
+        {% endfor %}
+    </nav>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,455 @@
+/*///////////////////////
+
+	Common
+
+//////////////////////*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
+    background-color: #FBFBFD;
+}
+
+a, body {
+	color: #333;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	opacity: 0.7;
+}
+
+main {
+	min-height: calc(100vh - 130px);
+}
+
+.container {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.hide-mobile {
+	display: none;
+}
+.content h1,
+.content h2,
+.section-title {
+	border-bottom: 1px solid #999;
+}
+
+.section-title {
+	font-size:20px;
+    padding-bottom: .3em;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25
+}
+
+.modal-mask {
+	display:none;
+}
+
+.modal-mask.active{
+	position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.5);
+    display: table;
+    transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+	display:table-cell;
+	vertical-align: middle;	
+}
+
+.modal-container {
+	position: relative;
+	padding: 20px 30px;
+    background-color: #FBFBFD;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.33);
+    transition: all .3s ease;
+    width:80%;
+    margin:0 auto;
+}
+
+input,
+textarea {
+	border-radius: 4px;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
+.form input,
+.form textarea {
+	width:100%;
+}
+
+.input-with-icon {
+	position: relative;
+}
+
+.input-with-icon > i {
+	position:absolute;
+	top:6px;
+	left:7px;
+}
+
+.input-with-icon > input {
+	padding-left: 25px;
+}
+
+.icon-button {
+	display:inline-block;
+	cursor:pointer;
+	border:none;
+	outline: none;
+	background-color: transparent;
+}
+
+.modal-delete {
+	cursor:pointer;
+	position:absolute;
+	top:5px;
+	right: 10px;
+}
+
+.flash-message {
+	padding: 10px;	
+}
+
+.is-success {
+	background-color: #dfd;
+}
+
+/*///////////////////////
+
+	Header, Footer
+
+//////////////////////*/
+.header, footer {
+    background-color: #11385C;
+    color: #F6F8F9;
+}
+
+.header a, footer a {
+	color: #E1E4E6;
+	text-decoration: none;
+}
+
+.header {
+	height:45px;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.footer {
+	margin-top:100px;
+	height: 50px;
+}
+
+.footer-list {
+	list-style: none;
+}
+
+/* hf: header fotter共通のクラス */ 
+.hf-grid-contents {
+	height:100%;
+	display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.hf-grid-contents > * {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+}
+
+.hf-grid-contents > :first-child {
+    justify-self: start !important;
+}
+
+.hf-grid-contents > :last-child {
+    justify-self: end;
+}
+
+
+/*///////////////////////
+
+	Post List
+
+//////////////////////*/
+
+.posts-count, .all-tags {
+	font-size:14px;
+	margin-bottom:20px;
+}
+
+.search-form {
+	display:flex;
+	margin-top:30px;
+}
+
+.post {
+	margin-bottom: 32px;
+} 
+
+.post .title {
+	font-size:16px;
+	font-weight:700;
+	margin-bottom:3px;
+}
+
+.post .description {
+	font-size: 14px;
+	margin-bottom: 5px;
+}
+
+.post-link {
+	display:block
+}
+
+a.post-link:hover {
+	opacity: 0.7;
+}
+
+/* ページネーション部分 */
+.page-list {
+  grid-column: 1 / -1;
+  justify-self: center;
+  text-align: center;
+}
+
+.page-list > * {
+  display: inline-block;
+  margin-right: 1em;
+  padding: 10px;
+}
+
+.page.current {
+  color: #333;
+  font-weight:600;
+}
+
+/*///////////////////////
+
+	Post Detail
+
+//////////////////////*/
+
+.main-grid-contents {
+	display: grid;
+    grid-template-columns: minmax(0,1fr);
+    grid-auto-rows: auto;
+    row-gap: 80px;
+}
+
+#posts {
+	margin-top: 30px;
+}
+
+#post-header{
+	margin: 30px 0 64px;
+}
+
+#side {
+	grid-row: 1;
+}
+
+#toc {
+	border-left: 1px solid #999;
+    padding: 20px 0 20px 20px;
+    font-size: 12px;	
+}
+
+#tocTitle , #toc > div.toc li{
+	margin-bottom: 8px;
+}
+
+.toc ul{
+	list-style:none !important;
+	line-height : 2.5 !important;
+	padding:0 !important;
+}
+
+.toc ul > li > ul{
+	padding-inline-start:15px !important;
+}
+
+.toc ul > li:before{
+	content: '- ';
+}
+
+.toc a.active {
+	color: #11385C;
+	font-weight:700;
+}
+
+.post-title {
+    font-weight: 700;
+    font-size:32px;
+    margin-bottom: 10px;
+}
+
+.break {
+	margin: 0 8px;
+}
+
+.tag {
+	display:inline-block;
+	padding: 2px 6px;
+	border-radius: 2px;
+	font-size: 12px;
+	color: #11385C;;
+	background-color: #dbe2ef;
+    margin-right: 8px;
+}
+
+#post-content {
+	grid-column: 1;
+    width: 100%;
+    line-height: 2;
+}
+
+#relation {
+	grid-column: 1
+}
+
+#comments {
+	grid-column: 1;
+}
+
+.comment {
+	margin:32px 0 10px;
+	line-height:1.5;
+}
+
+.comment > * {
+	margin-bottom: 10px;
+}
+
+.comment > :first-child{
+	font-size:12px;
+	color:#ccc;
+}
+
+.is_reply {
+	padding-left: 5%;
+}
+
+.do-comment,
+.do-reply {
+	color: #11385C;
+	font-size:14px;
+	font-weight:600;
+	cursor:pointer;
+}
+
+.do-reply{
+	text-align:right;
+	border-bottom: 1px solid #999;
+    padding-bottom: 10px;
+}
+
+.markdownx-editor {
+	display: none;
+}
+
+.markdownx-editor.active {
+	display: block;
+}
+
+.markdownx-preview {
+	display: none;
+}
+
+.markdownx-preview.active {
+	display: block;
+}
+
+.modal-body .markdownx-editor,
+.modal-body .markdownx-preview {
+	height: 300px;
+	max-height:300px;
+	overflow-y: scroll;
+}
+
+.modal-body .markdownx-preview {
+	background-color:#fff;
+	border-radius: 2px;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    border: solid 1px #000;
+}
+
+
+@media (min-width: 768px) {
+	.container {
+        width: 700px;
+        padding: 0;
+        margin: 0 auto;
+    }
+    
+    
+    .hide-mobile {
+    	display: block;
+    }
+    
+    .modal-container {
+    	width: 600px;
+    }
+}
+
+@media (min-width: 1024px) {
+	.container {
+        width: 980px;
+    }
+
+    .main-grid-contents {
+        display: grid;
+	    grid-template-columns: 600px 300px;
+	    -moz-column-gap: 60px;
+	    column-gap: 60px;
+	    grid-auto-rows: auto;
+	    row-gap: 100px;   
+    }	
+    
+
+    #toc {
+	    margin-top: 50px;
+	    width: 150px;
+	    justify-self: right;
+	    align-self: start;
+	    position: -webkit-sticky;
+	    position: sticky;
+	    top: 20px;
+	}
+    
+	
+	#side {
+	    grid-column: 2;
+	    grid-row: 1;
+	    justify-self: end;
+	}
+	
+    
+}

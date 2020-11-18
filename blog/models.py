@@ -5,20 +5,29 @@ from markdownx.models import MarkdownxField  # @UnresolvedImport
 from django.db.models.fields.related import ForeignKey
   
 class Tag(models.Model):
-    name = models.CharField('タグ名', max_length=50)
+    name = models.CharField('タグ名', max_length=50, unique=True, null=False)
   
     def __str__(self):
         return self.name
+
+class PostQuerySet(models.QuerySet):
+    
+    def published(self):
+        '''公開済みの記事を取得'''
+        return self.filter(published_at__lte=timezone.now())
+        
   
 class Post(models.Model):
     title = models.CharField('タイトル', max_length=80)
     author = ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='投稿者')
-    tags = models.ManyToManyField(Tag, blank=True, null=True)
+    tags = models.ManyToManyField(Tag, blank=True, null=True, verbose_name='タグ')
     description = MarkdownxField('説明文', blank=True, null=True, help_text='一覧ページで表示される投稿の説明文です。')
     content = MarkdownxField('本文', help_text='Markdown形式で記述。')
     created_at = models.DateTimeField('作成日', default=timezone.now)
     published_at = models.DateTimeField('公開日', blank=True, null=True)
     relation_posts = models.ManyToManyField('self',blank=True, null=True, verbose_name='関連記事')
+      
+    objects = PostQuerySet.as_manager()
       
     def publish(self):
         self.published_at = timezone.now()
