@@ -7,5 +7,4 @@ from django.http.response import HttpResponse
 class HomeView(View):
      
     def get(self, request, *args, **kwargs):
-        return HttpResponse('ok')
-    
+        return render(request, 'blog/home.html')

@@ -17,7 +17,7 @@ class NewVisitorTests(unittest.TestCase):
         '''
         
         self.browser.get('http:127.0.0.1:8000')
-        self.assertIn('Django', self.browser.title)
+        self.assertIn('Blog', self.browser.title)
         
         
         
