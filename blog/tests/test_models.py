@@ -1,10 +1,10 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from blog.models import Post, Tag
-from blog.tests.testcases import SuperUserTestCase
+from blog.tests.testcases import CustomTestCase
 
 
-class PostModelTest(SuperUserTestCase):
+class PostModelTest(CustomTestCase):
      
     def test_create_and_get_post_object(self):
         '''
@@ -75,7 +75,7 @@ class TagModelTest(TestCase):
         except Exception as e:
             self.assertEquals(str(e.__cause__), 'UNIQUE constraint failed: blog_tag.name')
         
-class UserModelTest(SuperUserTestCase):
+class UserModelTest(CustomTestCase):
     '''
         superuserを作成する。
         superuserでログインする。

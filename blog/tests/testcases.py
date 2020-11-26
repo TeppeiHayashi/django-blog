@@ -1,11 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from faker import Factory
+    
 
-class SuperUserTestCase(TestCase):
+class CustomTestCase(TestCase):
     '''
         superuserを用いるTestCase
     '''
-     
+    
     def setUp(self):
         '''
             TestCase.setUp をオーバーライド。
@@ -23,3 +25,4 @@ class SuperUserTestCase(TestCase):
         user.is_active = True
         user.save()
         self.user = user
+        
