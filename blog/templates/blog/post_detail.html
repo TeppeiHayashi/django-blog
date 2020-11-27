@@ -50,6 +50,41 @@
 			
 			<section id="comments">
 				<h2 class="section-title">コメント一覧</h2>
+				{% for comment in post.comments.all %}
+					<div class="comment">
+						<p>
+							<time>{{ comment.created_at|date:"Y年m月j日" }}</time>
+							<span class="break">|</span>
+							<span>{{ comment.name }}</span>
+							{% if not comment.is_approve %}<i class="fa fa-check-circle" aria-hidden="true" style="color:red;"></i>{% endif %}
+						</p>
+						<div class="content">
+							{{ comment.text | markdown_to_html_with_escape }}
+						</div>
+
+						{% for reply in comment.replies.all %}
+							<div class="comment is_reply">
+								<p>
+									<time>{{ reply.created_at|date:"Y年m月j日" }}</time>
+									<span class="break">|</span>
+									<span>{{ reply.name }}</span>
+									{% if not reply.is_approve %}<i class="fa fa-check-circle" aria-hidden="true" style="color:red;"></i>{% endif %}
+								</p>
+								<div class="content">
+									{{ reply.text | markdown_to_html }}
+								</div>
+							</div>
+						{% endfor %}
+							<p class="do-reply show-modal" data-target="reply_{{ comment.pk }}">
+								返信する
+							</p>
+						{% include 'blog/comment_create.html' with id="reply_"|addstr:comment.pk form=reply_form target=comment url_reverse='blog:add_reply' %}
+					</div>
+				{% endfor %}
+				<p class="do-comment show-modal" data-target="comment_{{ post.pk }}">新しくコメントする</p>
+				
+			{% include 'blog/comment_create.html' with id="comment_"|addstr:post.pk form=comment_form target=post url_reverse='blog:add_comment' %}
+				
 			</section>
 			
 		</div>

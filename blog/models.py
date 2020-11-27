@@ -39,6 +39,11 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_at']
        
+ 
+class CommentReplyQueryset(models.QuerySet):
+    
+    def approved(self):
+        self.filter(is_approve=True) 
           
 class Comment(models.Model):
     name = models.CharField('名前', max_length=20)
@@ -46,7 +51,9 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='対象記事', related_name='comments')
     created_at = models.DateTimeField('作成日', default=timezone.now)
     is_approve = models.BooleanField(default=False)
-      
+    
+    objects = CommentReplyQueryset.as_manager()
+    
     def approve(self):
         self.is_approve = True
       
@@ -57,7 +64,9 @@ class Reply(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='対象コメント', related_name='replies')
     created_at = models.DateTimeField('作成日', default=timezone.now)
     is_approve = models.BooleanField(default=False)
-      
+    
+    objects = CommentReplyQueryset.as_manager()
+    
     def approve(self):
         self.is_approve = True
           

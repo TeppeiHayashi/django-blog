@@ -20,7 +20,7 @@
 	</p>
 	{% for post in posts %}
 		<article class="post">
-			<a href="" class="post-link">		
+			<a href="{% url 'blog:post_detail' pk=post.pk %}" class="post-link">		
 				<h2 class="title">
 					{% if not post.published_at %}
 						<i class="fa fa-lock" aria-hidden="true"></i>

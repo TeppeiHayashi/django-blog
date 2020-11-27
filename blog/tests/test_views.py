@@ -2,8 +2,8 @@ from django.urls import resolve
 from django.test import TestCase, Client
 from blog import views
 from blog.models import Post, Tag
-from blog.tests.testcases import CustomTestCase
 from blog.factories import UserFactory, PostFactory, TagFactory
+from blog.forms import CreateCommentForm,CreateReplyForm
     
 class IndexPageTest(TestCase):
     
@@ -107,7 +107,7 @@ class IndexPageTest(TestCase):
  
  
    
-class DetailPageTest(TestCase):
+class PostDetailPageTest(TestCase):
     
     def setUp(self):
         self.superuser = UserFactory(is_staff=True, is_superuser=True)
@@ -156,4 +156,14 @@ class DetailPageTest(TestCase):
         '''
         response = self.client.get('/detail/3')
         self.assertEqual(404, response.status_code)
+        
+      
+    def test_comment_and_reply_form(self):
+        response = self.client.get('/detail/1')
+        self.assertIn('comment_form', response.context)
+        self.assertIn('reply_form', response.context)
+        self.assertTrue(isinstance(response.context['comment_form'], CreateCommentForm))
+        self.assertTrue(isinstance(response.context['reply_form'], CreateReplyForm))
+        
+        
         

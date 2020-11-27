@@ -1,0 +1,16 @@
+<div class="modal-mask" id="{{ id }}" data-target="{{ id }}">
+	<div class="modal-wrapper">
+		<div class="modal-container">
+			<button class="icon-button modal-delete" data-target="{{ id }}" type="button"><i class="fa fa-times fa-2x" aria-hidden="true"></i></button>
+			<div class="modal-body">	
+				<form action="{% url url_reverse pk=target.pk %}" method="POST" class="form" >
+					{% csrf_token %}
+					{{ form.name }}
+					{{ form.text }}
+					{{ form.media }}
+					<input type="submit" value="送信"/>	
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
