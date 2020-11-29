@@ -12,7 +12,18 @@ class CreateCommentForm(forms.ModelForm):
                 attrs={'placeholder': '本文: Markdown形式で記述できます。',
                        'class': 'active'}),
         }
-        
+    
+    def __init__(self, *args, **kwargs):
+        self.post = kwargs.pop('post', None)
+        super().__init__(*args, **kwargs)
+    
+    
+    def save(self):
+        comment = super().save(commit=False)
+        comment.post = self.post
+        comment.save()
+        return comment
+             
 class CreateReplyForm(forms.ModelForm):
      
     class Meta:
@@ -23,4 +34,13 @@ class CreateReplyForm(forms.ModelForm):
                 attrs={'placeholder': '本文: Markdown形式で記述できます。',
                        'class': 'active'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        self.comment = kwargs.pop('comment', None)
+        super().__init__(*args, **kwargs)
         
+    def save(self):
+        reply = super().save(commit=False)
+        reply.comment = self.comment
+        reply.save()
+        return reply

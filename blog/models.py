@@ -1,9 +1,10 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 from django.utils import timezone
 from markdownx.models import MarkdownxField  # @UnresolvedImport
 from django.db.models.fields.related import ForeignKey
-  
+
 class Tag(models.Model):
     name = models.CharField('タグ名', max_length=50, unique=True, null=False)
   
@@ -57,7 +58,9 @@ class Comment(models.Model):
     def approve(self):
         self.is_approve = True
       
-      
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', kwargs={'pk' : self.post.pk})  
+    
 class Reply(models.Model):
     name = models.CharField('名前', max_length=20)
     text = MarkdownxField('本文', help_text='Markdown形式で記述できます。')
@@ -69,4 +72,6 @@ class Reply(models.Model):
     
     def approve(self):
         self.is_approve = True
-          
+    
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', kwargs={'pk' : self.comment.post.pk})

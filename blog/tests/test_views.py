@@ -1,4 +1,4 @@
-from django.urls import resolve
+from django.urls import resolve, reverse
 from django.test import TestCase, Client
 from blog import views
 from blog.models import Post, Tag
@@ -165,5 +165,14 @@ class PostDetailPageTest(TestCase):
         self.assertTrue(isinstance(response.context['comment_form'], CreateCommentForm))
         self.assertTrue(isinstance(response.context['reply_form'], CreateReplyForm))
         
+        form = CreateCommentForm({
+                'name' : '名無し',
+                'text' :'コメントのテストです。'
+            }, post=self.published_post)
+        self.assertTrue(form.is_valid())
+        comment = form.save()
+        self.assertEqual(comment.name, '名無し')
+        self.assertEqual(comment.text, 'コメントのテストです。')
+        self.assertEqual(comment.post, self.published_post)
         
-        
+                

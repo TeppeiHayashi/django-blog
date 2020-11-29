@@ -7,7 +7,9 @@ from blog.models import Post, Comment, Reply
 from blog.forms import CreateCommentForm, CreateReplyForm
 # Create your views here.
 
+import logging
 
+logger = logging.getLogger('blog')
 class IndexView(generic.ListView):
     model = Post
     context_object_name = 'posts'
@@ -57,15 +59,19 @@ class CreateComment(generic.CreateView):
     model = Comment
     form_class = CreateCommentForm
     
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['post'] = get_object_or_404(Post, pk=self.kwargs.get('pk'))
+        return kwargs
+    
     def form_valid(self, form):
-        form.instance.post = get_object_or_404(Post, pk=self.kwargs.get('pk'))
         form.instance.is_approve = self.request.user.is_superuser
         messages.success(self.request, 'コメントを送信しました。管理者が承認することでページに表示されます。')
         return super().form_valid(form)
-        
-    def get_success_url(self):
-        return reverse_lazy('blog:post_detail', kwargs = {'pk' : self.kwargs.get('pk')})
     
+    def form_invalid(self, form):
+        messages.error(self.request, 'コメントの送信に失敗しました。')
+        return super().form_invalid(form)
         
         
 class CreateReply(generic.CreateView):
@@ -76,11 +82,20 @@ class CreateReply(generic.CreateView):
     model = Reply
     form_class = CreateReplyForm
     
+    def get_form_kwargs(self):
+        logger.debug('get_form_kwargs')
+        kwargs = super().get_form_kwargs()
+        kwargs['comment'] = get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+        return kwargs
+    
     def form_valid(self, form):
-        form.instance.comment = get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+        logger.debug(form.instance)
         form.instance.is_approve = self.request.user.is_superuser
         messages.success(self.request, 'コメントを送信しました。 管理者が承認することでページに表示されます。')
         return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        return super().form_invalid(form)
     
     def get_success_url(self):
         return reverse_lazy('blog:post_detail', kwargs = {'pk' : Comment.objects.get(pk = self.kwargs.get('pk')).post.pk})
