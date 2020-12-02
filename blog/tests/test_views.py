@@ -1,3 +1,8 @@
+'''
+    Viewに関するテストモジュール
+'''
+
+
 from django.urls import resolve, reverse
 from django.test import TestCase, Client
 from blog import views
@@ -82,7 +87,7 @@ class IndexPageTest(TestCase):
     
     def test_pagination(self):
         '''
-            1ページ
+            ページネーションの動作確認
         '''
         
         # 1ページ当たりの表示するPost数
@@ -108,6 +113,9 @@ class IndexPageTest(TestCase):
  
    
 class PostDetailPageTest(TestCase):
+    '''
+        Detailページのテストクラス reverse('blog:post_detail', pk=Post.ok) 
+    '''
     
     def setUp(self):
         self.superuser = UserFactory(is_staff=True, is_superuser=True)
@@ -159,11 +167,20 @@ class PostDetailPageTest(TestCase):
         
       
     def test_comment_and_reply_form(self):
+        '''
+            コメントフォームがコンテキストに含まれているか
+        '''
+        
         response = self.client.get('/detail/1')
         self.assertIn('comment_form', response.context)
         self.assertIn('reply_form', response.context)
         self.assertTrue(isinstance(response.context['comment_form'], CreateCommentForm))
         self.assertTrue(isinstance(response.context['reply_form'], CreateReplyForm))
+        
+    def test_create_comment(self):
+        '''
+            コメント作成のテスト
+        '''
         
         form = CreateCommentForm({
                 'name' : '名無し',

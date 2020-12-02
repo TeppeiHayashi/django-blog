@@ -7,10 +7,11 @@ from blog.models import Post, Comment, Reply
 from blog.forms import CreateCommentForm, CreateReplyForm
 # Create your views here.
 
-import logging
 
-logger = logging.getLogger('blog')
 class IndexView(generic.ListView):
+    '''
+        Post一覧ページ
+    '''
     model = Post
     context_object_name = 'posts'
     paginate_by = 10
@@ -33,6 +34,9 @@ class IndexView(generic.ListView):
     
     
 class PostDetailView(generic.DetailView):
+    '''
+        Post詳細ページ
+    '''
     model = Post
     
     def get_object(self, queryset=None):
@@ -60,6 +64,9 @@ class CreateComment(generic.CreateView):
     form_class = CreateCommentForm
     
     def get_form_kwargs(self):
+        '''
+            Commentに紐づくPostを取得、追加。
+        '''
         kwargs = super().get_form_kwargs()
         kwargs['post'] = get_object_or_404(Post, pk=self.kwargs.get('pk'))
         return kwargs
@@ -83,13 +90,14 @@ class CreateReply(generic.CreateView):
     form_class = CreateReplyForm
     
     def get_form_kwargs(self):
-        logger.debug('get_form_kwargs')
+        '''
+            Replyに紐づくCommentを取得、追加。
+        '''
         kwargs = super().get_form_kwargs()
         kwargs['comment'] = get_object_or_404(Comment, pk=self.kwargs.get('pk'))
         return kwargs
     
     def form_valid(self, form):
-        logger.debug(form.instance)
         form.instance.is_approve = self.request.user.is_superuser
         messages.success(self.request, 'コメントを送信しました。 管理者が承認することでページに表示されます。')
         return super().form_valid(form)

@@ -1,3 +1,7 @@
+'''
+    Modelに関するテストモジュール
+'''
+
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from blog.models import Post, Tag
