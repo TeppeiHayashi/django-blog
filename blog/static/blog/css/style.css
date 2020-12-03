@@ -136,6 +136,10 @@ textarea {
 	background-color: #dfd;
 }
 
+.is-error {
+	background-color: #fdd
+}
+
 /*///////////////////////
 
 	Header, Footer

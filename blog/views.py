@@ -77,7 +77,7 @@ class CreateComment(generic.CreateView):
         return super().form_valid(form)
     
     def form_invalid(self, form):
-        messages.error(self.request, 'コメントの送信に失敗しました。')
+        messages.error(self.request, 'コメントの投稿に失敗しました。内容を確認してください。')
         return super().form_invalid(form)
         
         
@@ -103,6 +103,7 @@ class CreateReply(generic.CreateView):
         return super().form_valid(form)
     
     def form_invalid(self, form):
+        messages.error(self.request, 'コメントの投稿に失敗しました。内容を確認してください。')
         return super().form_invalid(form)
     
     def get_success_url(self):

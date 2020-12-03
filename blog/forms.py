@@ -8,6 +8,9 @@ class CreateCommentForm(forms.ModelForm):
         model =Comment
         fields = ('name', 'text')
         widgets = {
+            'name': forms.widgets.TextInput(
+                 attrs={'value': '名無し'}
+                ),
             'text': CustomMarkdownxWidget(
                 attrs={'placeholder': '本文: Markdown形式で記述できます。',
                        'class': 'active'}),
@@ -30,6 +33,9 @@ class CreateReplyForm(forms.ModelForm):
         model = Reply
         fields = ('name', 'text')
         widgets = {
+            'name': forms.widgets.TextInput(
+                 attrs={'value': '名無し'}
+                ),
             'text': CustomMarkdownxWidget(
                 attrs={'placeholder': '本文: Markdown形式で記述できます。',
                        'class': 'active'}),

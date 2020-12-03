@@ -18,6 +18,16 @@
 		<h1 class="header-title"><a href="{% url 'blog:index' %}">Sample</a></h1>
     </div>
 </header>
+{% if messages %}
+	{% for message in messages %}
+	<div class="flash-message {% if message.tags %}is-{{ message.tags }}{% endif %}">
+		<div class="container">
+			{{ message }}
+		</div>
+	</div>
+	{% endfor %}
+{% endif %}
+
 
 <main class="container">
 	{% block content %}
