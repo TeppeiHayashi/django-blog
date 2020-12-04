@@ -35,7 +35,6 @@ class IndexPageTest(TestCase):
         PostFactory.create_batch(size=published_count,
                                  author=self.superuser)
         
-        
         # superuserのリクエスト
         client = Client()
         client.force_login(self.superuser)
@@ -53,37 +52,6 @@ class IndexPageTest(TestCase):
         self.assertTrue(len(response.context['posts']) == published_count)
         self.assertQuerysetEqual(response.context['posts'], Post.objects.published(), transform=lambda x: x) 
 
-      
-    def test_get_posts_by_filtering_tag(self):
-        '''
-            query_stringにTagが指定された際は、そのTagと紐づいたPostのみ取得する。
-        '''
-        
-        tags = []
-        tag_names = ['Python', 'Django', 'Kaggle']
-        for tag_name in tag_names:
-            tags.append(TagFactory(name=tag_name))
-        # > [<Tag: Python>, <Tag: Django>, <Tag: Kaggle>]
-        
-        self.assertEquals(Tag.objects.all().count(), len(tags))
-                
-        PostFactory(author=self.superuser, tags=(tags[0],))
-        PostFactory(author=self.superuser, tags=(tags[0], tags[2]))
-        PostFactory(author=self.superuser, tags=(tags[1], tags[2]))
-            
-        self.assertEquals(Post.objects.all().count(), 3)
-        
-        client = Client()
-        client.force_login(self.superuser)
-        response = client.get('/?tag=1')
-        
-        tag_pk = response.wsgi_request.GET.get('tag', None)
-        self.assertEquals(tag_pk , '1')
-        
-        tag = Tag.objects.get(pk=tag_pk)
-        self.assertEquals(tag.name, 'Python') # pkは１から
-        self.assertEquals(Post.objects.filter(tags=int(tag_pk)).count(), 2)
-        self.assertEquals(response.context['posts'].count(), 2)
     
     def test_pagination(self):
         '''
@@ -110,7 +78,16 @@ class IndexPageTest(TestCase):
         response = self.client.get('/?page=3')
         self.assertEquals(404, response.status_code)
  
- 
+    def test_search_for_post_contains_keyword(self):
+        PostFactory(title='今日', content='Today' ,description='0')
+        PostFactory(title='Today', content='今日' ,description='0')
+        PostFactory(title='明日', content='tomorrow', description='-1')
+        PostFactory(title='tomorrow', content='明日', description='-1')
+        
+        response = self.client.get('/?keyword=今日')
+        self.assertEqual(response.context['posts'].count(), 2)
+        self.assertEqual(Post.objects.all().count(), 4)
+        
    
 class PostDetailPageTest(TestCase):
     '''
@@ -192,4 +169,19 @@ class PostDetailPageTest(TestCase):
         self.assertEqual(comment.text, 'コメントのテストです。')
         self.assertEqual(comment.post, self.published_post)
         
-                
+class PostTagPageTest(TestCase):
+    
+    def setUp(self):
+        tags = {}
+        for name in ['Python', 'Kaggle', 'Django']:
+            tags[name] = TagFactory(name=name)
+        
+        PostFactory(tags=(tags['Python'],))
+        PostFactory(tags=(tags['Python'], tags['Django']))
+        PostFactory(tags=(tags['Kaggle'],))
+        
+    def test_success_to_access_post_tag_page(self):
+        response = self.client.get('/archive/tag/Python')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/post_list.html')
+          

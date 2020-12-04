@@ -3,7 +3,8 @@ from django.http import Http404
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views import generic
-from blog.models import Post, Comment, Reply
+from django.db.models import Q, Count
+from blog.models import Post, Comment, Reply, Tag
 from blog.forms import CreateCommentForm, CreateReplyForm
 # Create your views here.
 
@@ -18,6 +19,11 @@ class IndexView(generic.ListView):
     base_queryset = None
     
     def get_queryset(self):
+        '''
+           Postのqueryset下記の条件により絞り込む。
+           ・ アクセスが管理者かどうか
+           ・ キーワード検索か
+        '''
         
         if not self.request.user.is_superuser:
             self.base_queryset = self.model.objects.published()
@@ -25,13 +31,21 @@ class IndexView(generic.ListView):
             self.base_queryset = super().get_queryset()
         
         queryset = self.base_queryset
-        tag = self.request.GET.get('tag', None)
-        
-        if tag:
-            queryset = queryset.filter(tags=int(tag))
+
+        # キーワード検索
+        keyword = self.request.GET.get('keyword', None)
+        if keyword:
+            queryset = queryset.filter(Q(title__icontains=keyword) | 
+                                       Q(description__icontains=keyword) | 
+                                       Q(content__icontains=keyword))
             
         return queryset
     
+    def get_context_data(self, *, object_list=None, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        post_pk_list = self.base_queryset.values_list('pk', flat=True)
+        ctx['tags'] = Tag.objects.filter(post__in=post_pk_list).annotate(Count('post'))
+        return ctx
     
 class PostDetailView(generic.DetailView):
     '''
@@ -53,6 +67,10 @@ class PostDetailView(generic.DetailView):
         ctx = super().get_context_data(**kwargs)
         ctx['comment_form'] = CreateCommentForm()
         ctx['reply_form'] = CreateReplyForm()
+        ctx['breadcrumb'] = [
+                {'name' : self.object.tags.all()[0].name, 'link' : reverse_lazy('blog:tag_post_list', kwargs=dict(name=self.object.tags.all()[0].name))},
+                {'name' : self.object.title, 'link' :None }
+            ]
         return ctx
         
 class CreateComment(generic.CreateView):
@@ -109,5 +127,27 @@ class CreateReply(generic.CreateView):
     def get_success_url(self):
         return reverse_lazy('blog:post_detail', kwargs = {'pk' : Comment.objects.get(pk = self.kwargs.get('pk')).post.pk})
  
+ 
+class TagPostListView(IndexView):
+    '''
+        タグでの絞り込み検索
+        blog.views.IndexViewを継承している。
+    '''
+    model = Post
     
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        tag_name = self.kwargs.get('name', None)
+        
+        if tag_name:
+            queryset = queryset.filter(tags__name=tag_name)
+            return queryset
+        
+    def get_context_data(self, *, object_list=None, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['breadcrumb'] = [
+                {'name' : self.kwargs.get('name'), 'link' :None }
+            ]
+        
+        return ctx;
     

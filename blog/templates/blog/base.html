@@ -30,6 +30,22 @@
 
 
 <main class="container">
+	{% if breadcrumb %}
+	<ol class="breadcrumb">
+		<li><a href="/">トップ</a></li>
+	{% for element in breadcrumb %}
+		{% if element.link %}
+		<li>
+			<a href="{{ element.link }}">{{ element.name }}</a>
+		</li>
+		{% else %}
+		<li class="active">
+			{{ element.name }}
+		</li>
+		{% endif %}
+	{% endfor %}
+	</ol>
+	{% endif %}
 	{% block content %}
 	{% endblock %}
 </main>
