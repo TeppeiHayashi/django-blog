@@ -1,12 +1,12 @@
 from django import template
 from django.utils.safestring import mark_safe
-import markdown  # @UnresolvedImport
-from markdownx.utils import markdownify  # @UnresolvedImport
+import markdown
+from markdownx.utils import markdownify
 from markdownx.settings import (
-    MARKDOWNX_MARKDOWN_EXTENSIONS,  # @UnresolvedImport
-    MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS  # @UnresolvedImport
+    MARKDOWNX_MARKDOWN_EXTENSIONS,
+    MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS
 )
-from markdown.extensions import Extension  # @UnresolvedImport
+from markdown.extensions import Extension
 
 register = template.Library()
 

@@ -184,4 +184,5 @@ class PostTagPageTest(TestCase):
         response = self.client.get('/archive/tag/Python')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'blog/post_list.html')
+        self.assertEqual(response.context['posts'].count(), 2)
           

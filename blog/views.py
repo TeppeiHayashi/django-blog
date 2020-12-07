@@ -68,7 +68,6 @@ class PostDetailView(generic.DetailView):
         ctx['comment_form'] = CreateCommentForm()
         ctx['reply_form'] = CreateReplyForm()
         ctx['breadcrumb'] = [
-                {'name' : self.object.tags.all()[0].name, 'link' : reverse_lazy('blog:tag_post_list', kwargs=dict(name=self.object.tags.all()[0].name))},
                 {'name' : self.object.title, 'link' :None }
             ]
         return ctx
