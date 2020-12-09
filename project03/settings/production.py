@@ -1,5 +1,5 @@
-from .base import *
 from project03.aws.conf import *
+from .base import *
 import dj_database_url
 
 
