@@ -1,6 +1,6 @@
 import os
 
-DEFAULT_FILE_STORAGE = 'project03.aws.utils.MediaRootS3BotoStorage'
+# DEFAULT_FILE_STORAGE = 'project03.aws.utils.MediaRootS3BotoStorage'
 # <project-name> = Django プロジェクト名
 # STATICFILES_STORAGE = 'project03.aws.utils.StaticRootS3BotoStorage'
 # <project-name> = Django プロジェクト名
@@ -16,5 +16,5 @@ AWS_S3_OBJECT_PARAMETERS = {
 AWS_QUERYSTRING_AUTH = False  # URLからクエリパラメータを削除
 
 AWS_S3_URL = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-MEDIA_URL = 'https://%s/%s/' % (AWS_S3_URL, 'media')
+# MEDIA_URL = 'https://%s/%s/' % (AWS_S3_URL, 'media')
 # STATIC_URL = 'https://%s/%s/' % (AWS_S3_URL, 'static')

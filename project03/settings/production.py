@@ -1,5 +1,7 @@
 from .base import *
+from project03.aws.conf import *
 import dj_database_url
+
 
 
 
@@ -25,6 +27,8 @@ DATABASES = {
 }
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = 'https://%s/%s/' % (AWS_S3_URL, 'media')
 
 db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db_from_env)
