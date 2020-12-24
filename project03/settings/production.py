@@ -1,3 +1,7 @@
+'''
+本番環境の設定ファイル
+'''
+
 from project03.aws.conf import *
 from .base import *
 import dj_database_url

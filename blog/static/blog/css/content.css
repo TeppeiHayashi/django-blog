@@ -637,7 +637,7 @@
 .content table,
 .content ul {
   margin-top: 0;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .content hr {
@@ -675,7 +675,7 @@
 }
 
 .content h1 {
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 .content h1,

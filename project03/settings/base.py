@@ -1,3 +1,7 @@
+'''
+本番、開発共通の設定ファイル
+'''
+
 """
 Django settings for project03 project.
 
