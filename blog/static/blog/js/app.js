@@ -17,3 +17,10 @@ for (const element of document.querySelectorAll('.modal-delete, .show-modal')) {
 //	})
 //});
 
+window.onload = e => {
+	setTimeout(e => {
+		const loader = document.querySelector('.loader-wrapper')
+		loader.classList.add('loaded')		
+	}, 500)
+
+}
