@@ -33,7 +33,7 @@ for (const link of document.querySelectorAll('a')){
 			loader.classList.add('loading')
 			setTimeout(e => {
 				location.href = href	
-			},500)			
+			},800)			
 		}
 
 
