@@ -126,6 +126,7 @@ textarea {
 
 .input-with-icon > input {
 	padding-left: 25px;
+	min-width: 240px;
 }
 
 .icon-button {
@@ -255,9 +256,13 @@ textarea {
 	margin-bottom:20px;
 }
 
-.search-form {
-	display:flex;
+.all-tags > span{
+	padding:2px;
+	display:inline-block;
+	margin-right:3px;
+	margin-bottom:5px;
 }
+
 
 .post {
 	margin-bottom: 32px;
@@ -500,6 +505,7 @@ a.post-link:hover {
 	    grid-column: 2;
 	    grid-row: 1;
 	    justify-self: end;
+	    width: 80%;
 	}
 	
     
