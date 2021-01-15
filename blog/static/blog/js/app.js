@@ -17,10 +17,26 @@ for (const element of document.querySelectorAll('.modal-delete, .show-modal')) {
 //	})
 //});
 
-window.onload = e => {
-	setTimeout(e => {
-		const loader = document.querySelector('.loader-wrapper')
-		loader.classList.add('loaded')		
-	}, 500)
+for (const link of document.querySelectorAll('a')){
+	
+	link.addEventListener('click', e => {
+		
+		const href = link.getAttribute('href')
+		
+		if (href.startsWith('#')){
+			console.log(href);
+			return;
+		
+		}else{
+			e.preventDefault();
+			const loader = document.querySelector('.loader-wrapper')
+			loader.classList.add('loading')
+			setTimeout(e => {
+				location.href = href	
+			},500)			
+		}
 
+
+	})
 }
+
