@@ -133,5 +133,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
     'markdown.extensions.extra',  # コードブロック
-    'markdown.extensions.toc',    # 目次
+    'markdown.extensions.toc',   # 目次
+    'pymdownx.superfences'
 ]
