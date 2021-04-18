@@ -1,8 +1,9 @@
-/project03/settings/local.py
+/config/settings/local.py
 /media
 .project
 .pydevproject
 .env
 db.sqlite3
+staticfiles/
 __pycache__/
 *.pyc
