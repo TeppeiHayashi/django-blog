@@ -1,5 +1,5 @@
 from django.contrib import admin
-from markdownx.admin import MarkdownxModelAdmin  # @UnresolvedImport
+from markdownx.admin import MarkdownxModelAdmin
 from .models import Post, Tag, Comment, Reply
 # Register your models here.
 

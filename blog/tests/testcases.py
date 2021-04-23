@@ -1,13 +1,12 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from faker import Factory
-    
+
 
 class CustomTestCase(TestCase):
     '''
         superuserを用いるTestCase
     '''
-    
+
     def setUp(self):
         '''
             TestCase.setUp をオーバーライド。
@@ -15,7 +14,7 @@ class CustomTestCase(TestCase):
         '''
         if hasattr(self, 'user'):
             return
-            
+
         self.username = 'test_admin1'
         self.password = User.objects.make_random_password()
         user, created = User.objects.get_or_create(username=self.username)
@@ -25,4 +24,3 @@ class CustomTestCase(TestCase):
         user.is_active = True
         user.save()
         self.user = user
-        

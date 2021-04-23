@@ -1,6 +1,6 @@
-from .production import *
+from .production import *  # noqa E403
 
 try:
-    from .local import *
-except:
-    pass;
+    from .local import *  # noqa E403
+except ImportError:
+    pass

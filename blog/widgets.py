@@ -1,4 +1,5 @@
-from markdownx.widgets import MarkdownxWidget  # @UnresolvedImport
+from markdownx.widgets import MarkdownxWidget
+
 
 class CustomMarkdownxWidget(MarkdownxWidget):
     template_name = 'markdownx/widget2.html'
