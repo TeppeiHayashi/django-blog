@@ -25,14 +25,14 @@ class Post(models.Model):
     author = ForeignKey(settings.AUTH_USER_MODEL,
                         on_delete=models.CASCADE, verbose_name='投稿者')
     tags = models.ManyToManyField(
-        Tag, blank=True, null=True, verbose_name='タグ')
+        Tag, blank=True, verbose_name='タグ')
     description = MarkdownxField(
         '説明文', blank=True, null=True, help_text='一覧ページで表示される投稿の説明文です。')
     content = MarkdownxField('本文', help_text='Markdown形式で記述。')
     created_at = models.DateTimeField('作成日', default=timezone.now)
     published_at = models.DateTimeField('公開日', blank=True, null=True)
     relation_posts = models.ManyToManyField(
-        'self', blank=True, null=True, verbose_name='関連記事')
+        'self', blank=True, verbose_name='関連記事')
 
     objects = PostQuerySet.as_manager()
 

@@ -122,3 +122,5 @@ MARKDOWNX_MARKDOWN_EXTENSIONS = [
     'markdown.extensions.toc',   # 目次
     'pymdownx.superfences'
 ]
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
